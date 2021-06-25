@@ -18,8 +18,8 @@ class NoteDetail extends StatefulWidget {
 }
 
 class NoteDetailState extends State<NoteDetail> {
-  static var _priority = ['Hight', 'Low'];
-  var _currentValueSelected = 'Low';
+  static var _priorities = ['Hight', 'Low'];
+  //var _currentValueSelected = 'Low';
   DatabaseHelper helper = DatabaseHelper();
   String appBarTile;
   Note note;
@@ -28,11 +28,11 @@ class NoteDetailState extends State<NoteDetail> {
 
   NoteDetailState(this.note, this.appBarTile);
 
-  @override
-  void initState() {
-    super.initState();
-    _currentValueSelected = _priority[0];
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _currentValueSelected = _priority[0];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -63,18 +63,19 @@ class NoteDetailState extends State<NoteDetail> {
                 children: <Widget>[
                   ListTile(
                     title: DropdownButton(
-                        items: _priority.map((String dropDownStringItem) {
+                        items: _priorities.map((String dropDownStringItem) {
                           return DropdownMenuItem<String>(
                             value: dropDownStringItem,
                             child: Text(dropDownStringItem),
                           );
                         }).toList(),
                         style:textStyle,
+
                         value: getPriorityAsString(note.priority),
-                        onChanged: ( var newValueSelected) {
+                        onChanged: (valueSelectedByUser) {
                           setState(() {
-                            debugPrint('User selected $newValueSelected');
-                            updatePriorityAsInt(newValueSelected);
+                            debugPrint('User selected $valueSelectedByUser');
+                            updatePriorityAsInt(valueSelectedByUser);
                           });
                         }),
                   ),
@@ -159,6 +160,7 @@ class NoteDetailState extends State<NoteDetail> {
    // Navigator.of(context).pop();
     Navigator.pop(context,true);
   }
+
   //Convert the String priority in the form of integer before saving it to Database
   void updatePriorityAsInt(var value){
     switch(value){
@@ -175,10 +177,10 @@ class NoteDetailState extends State<NoteDetail> {
     String priority;
     switch(value){
       case 1:
-        priority = _priority[0]; //'High'
+        priority = _priorities[0]; //'High'
         break;
       case 2:
-        priority =_priority[1];//'Low'
+        priority =_priorities[1];//'Low'
         break;
     }
     return priority;
